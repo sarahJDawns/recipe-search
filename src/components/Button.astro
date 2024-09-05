@@ -1,0 +1,54 @@
+---
+import { Icon } from "astro-icon";
+
+interface Props {
+  id?: string;
+  icon?: {
+    name: string;
+    side: "left" | "right";
+  };
+  size?: "sm" | "md" | "lg";
+  block?: boolean;
+  style?: "primary";
+  class?: string;
+  [x: string]: any;
+}
+
+const {
+  size = "md",
+  style = "primary",
+  block,
+  class: className,
+  icon,
+  id = "",
+  ...rest
+} = Astro.props;
+
+const sizes = {
+  sm: "px-3 py-1",
+  md: "px-5 py-2.5",
+  lg: "px-6 py-3",
+};
+
+const styles = {
+  primary:
+    "bg-accent1 font-body text-lg text-background capitalize border-2 border-transparent rounded-md text-center border-accent1 hover:bg-background hover:text-accent1 font-bold",
+};
+---
+
+<button type="button"
+  {...rest}
+  class:list={[block && "w-full", sizes[size], styles[style], className]} 
+>
+    {
+      icon && icon.side === "left" && (
+        <Icon name={icon.name} height="24" width="24" />
+      )
+    }
+    <slot />
+    {
+      icon && icon.side === "right" && (
+        <Icon name={icon.name} height="24" width="24" />
+      )
+    }
+</button>

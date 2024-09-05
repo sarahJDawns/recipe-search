@@ -1,0 +1,44 @@
+---
+import Icon from "astro-icon";
+
+const socials = [
+  {
+    account: "Github",
+    path: "https://github.com/sarahJDawns",
+  },
+  {
+    account: "X",
+    path: "https://twitter.com/sjdawns",
+  },
+];
+---
+
+<footer class="bg-background font-body text-text uppercase flex">
+  <div class="flex flex-col md:flex-row items-center md:justify-between mx-auto mt-3 mb-3 w-full">
+    <ul class="flex flex-row gap-10">
+      {
+        socials.map((item) => (
+          <li class="flex flex-row">
+            <Icon
+              name="ph:spiral-bold"
+              width="15"
+              height="15"
+              class="text-accent2 mt-5 mr-3"
+            />
+            <a
+              aria-label="navigation link"
+              href={item.path}
+              target="_blank"
+              class="font-body text-text hover:text-accent1 py-5 text-xs font-regular uppercase"
+            >
+              {item.account}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="text-text py-5 text-xs font-normal">
+      Copyright &copy; {new Date().getFullYear()} | All rights reserved.
+    </p>
+  </div>
+</footer>

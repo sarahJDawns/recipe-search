@@ -1,0 +1,120 @@
+---
+import Button from "../components/Button.astro";
+import Input from "../components/Input.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout >
+  <main class="container flex w-full flex-col">
+    <section>
+      <div class="flex flex-col md:flex-row items-center justify-around">
+        <Input
+          id="calories"
+          type="number"
+          name="calories"
+          label="Calories"
+          placeholder="Enter max"
+          required="true"
+        />
+        <Input
+          id="carbs"
+          type="number"
+          name="carbs"
+          label="Carbohydrates"
+          placeholder="Enter max"
+          required="true"
+        />
+        <Input
+          id="fat"
+          type="number"
+          name="fat"
+          label="Fat"
+          placeholder="Enter max"
+          required="true"
+        />
+        <Input
+          id="protein"
+          type="number"
+          name="protein"
+          label="Protein"
+          placeholder="Enter min"
+          required="true"
+        />
+      </div>
+      <div class="flex flex-row justify-center gap-4 mt-10 md:mt-0">
+        <Button
+          style={"primary"}
+          size={"sm"}
+          class={"flex searchButton"}
+          id="search"
+        >
+          Search!
+        </Button>
+        <Button
+          style={"primary"}
+          size={"sm"}
+          class={"flex clearButton"}
+          id="clear"
+        >
+          Clear!
+        </Button>
+      </div>
+      <div class="p-5">
+        <p
+          class="errorMessage text-text2 font-bold text-lg mt-10 flex flex-row text-center justify-center uppercase"
+        >
+        </p>
+      </div>
+    </section>
+    <section>
+      <div
+        class="display md:flex-row flex flex-col flex-wrap items-center w-full mb-10 min-h-[400px]"
+        id="display"
+      >
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script type="module">
+  const inputs = document.querySelectorAll("input");
+  const searchButton = document.querySelector("button.searchButton");
+  const clearButton = document.querySelector("button.clearButton");
+  const errorMessage = document.querySelector(".errorMessage");
+  const displayDiv = document.querySelector(".display");
+
+  searchButton.addEventListener("click", function () {
+    const isEmpty = Array.from(inputs).some((input) => input.value === "");
+
+    if (isEmpty) {
+      errorMessage.textContent = "Please enter search criteria.";
+    } else {
+      errorMessage.textContent = "";
+      const [maxCalories, maxCarbs, maxFat, minProtein] = Array.from(
+        inputs
+      ).map((input) => input.value);
+      getRecipesWithMacros(maxCalories, maxCarbs, maxFat, minProtein);
+    }
+  });
+
+  clearButton.addEventListener("click", () => {
+    inputs.forEach((input) => (input.value = ""));
+    displayDiv.innerHTML = "";
+  });
+
+  async function getRecipesWithMacros(
+    maxCalories,
+    maxCarbs,
+    maxFat,
+    minProtein
+  ) {
+    try {
+      const url = `/api/recipes?maxCalories=${maxCalories}&maxCarbs=${maxCarbs}&maxFat=${maxFat}&minProtein=${minProtein}`;
+      const response = await fetch(url);
+      const data = await response.json();
+    } catch (error) {
+      console.error(error);
+      errorMessage.textContent = "Failed to fetch recipes. Please try again.";
+    }
+  }
+</script>

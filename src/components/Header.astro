@@ -1,0 +1,27 @@
+---
+import { Icon } from "astro-icon";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = "Macro Meal Recipe Finder",
+  description = "Search for recipes by macro nutrients.",
+  image,
+} = Astro.props;
+---
+
+<header>
+  <div class="flex flex-row justify-start p-4">
+    <Icon
+      name="icon-park-outline:cook"
+      width="50"
+      height="50"
+      class="text-accent2"
+    />
+   <h1 class="text-xl md:text-4xl text-text font-body font-bold py-2 px-4">{title}</h1>
+  </div>
+</header>
